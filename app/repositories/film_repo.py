@@ -1,6 +1,10 @@
+from datetime import datetime
 from typing import Optional, Dict, Any, List
 
+from app.exception import DatabaseException
+from app.models import FilmCategory
 from app.models.film import Film
+from app.extension import db
 
 
 class FilmRepository:
@@ -32,12 +36,24 @@ class FilmRepository:
         return Film.query.filter_by(title=film_title)
 
     @staticmethod
-    def create_film(film):
-        # try:
-        #     db.session.begin()
-        #     db.session.add(film)
-        #     db.session.commit()
-        # except Exception as err:
-        #     db.session.rollback()
-        print("create film success full")
-        return
+    def create_film(film_data: Dict[str, Any]):
+        now = datetime.utcnow().date()
+        try:
+            film_data['last_update'] = now
+            categories = film_data.pop('categories')
+            film = Film(**film_data)
+            db.session.add(film)
+            db.session.flush()
+            for category_id in categories:
+                film_category = FilmCategory(
+                    film_id=film.film_id,
+                    category_id=category_id,
+                    last_update=now
+                )
+                db.session.add(film_category)
+            db.session.commit()
+            return
+
+        except Exception as e:
+            db.session.rollback()
+            raise DatabaseException()

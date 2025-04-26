@@ -29,7 +29,7 @@ class CreateFilm(ma.SQLAlchemyAutoSchema):
     length = fields.Integer(required=True)
     replacement_cost = fields.Decimal(required=True)
     rating = fields.String(required=True)
-    special_feature = fields.String(required=True)
+    special_features = fields.String(required=True)
     categories = fields.List(fields.Integer(), required=True, validate=validate.Length(min=1))
 
 

@@ -46,12 +46,11 @@ class FilmService:
     def create_film(film: Dict[str, Any]):
         status, msg, detail = 0, '', None
         try:
-            film: Film = FilmRepository.create_film(film)
-            status = 1
-            msg = "Oke"
+            FilmRepository.create_film(film)
         except Exception as err:
             raise DatabaseException()
-
+        status = 1
+        msg = "Oke"
         return {
             "status": status,
             "msg": msg,
