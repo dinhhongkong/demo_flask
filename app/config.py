@@ -22,3 +22,6 @@ class Config:
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=180)
     JWT_VERIFY_SUB = False
+
+    # config redis
+    REDIS_URL = "redis://localhost:6379/0"
