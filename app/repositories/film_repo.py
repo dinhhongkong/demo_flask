@@ -6,6 +6,9 @@ from app.models import FilmCategory
 from app.models.film import Film
 from app.extension import db
 
+from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.future import select
+
 
 class FilmRepository:
     @staticmethod
@@ -57,3 +60,20 @@ class FilmRepository:
         except Exception as e:
             db.session.rollback()
             raise DatabaseException()
+
+    @staticmethod
+    def get_all_films_with_categories():
+        print("da chay get_all_films_with_categories")
+        # Truy vấn các phim kèm theo danh mục của chúng
+        # films_with_categories = Film.query.options(joinedload(Film.film_category_list).joinedload(FilmCategory.category)).all()
+        films_with_categories = Film.query.options(selectinload(Film.film_category_list)
+                                                   .selectinload(FilmCategory.category)).all()
+        films_data = []
+        for film in films_with_categories:
+            categories = [film_category.category for film_category in film.film_category_list]  # Lấy tên danh mục của mỗi phim
+            films_data.append({
+                "film_title": film.title,
+                "categories": categories
+            })
+
+        return films_data

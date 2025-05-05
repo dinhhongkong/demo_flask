@@ -6,6 +6,7 @@ from app.controllers.city_controller import city_bp
 from app.controllers.film_controller import film_bp
 from app.error_handler import register_error_handlers
 from app.extension import db, ma, jwt, redis_client
+from app.repositories.film_repo import FilmRepository
 
 
 def create_app():

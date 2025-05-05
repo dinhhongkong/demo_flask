@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from marshmallow import ValidationError
 
 from app.exception import WrongParamException
+from app.repositories.film_repo import FilmRepository
 from app.schemas.film_schema import filter_films_schema, create_film_schema
 from app.services.film_service import FilmService
 
@@ -35,3 +36,12 @@ def create_film_controller():
 
     result = FilmService.create_film(body_data)
     return result
+
+
+@film_bp.route('/api/film_test', methods=['GET'])
+def abcs():
+    result = FilmRepository.get_all_films_with_categories()
+    print("ket qua la: ", result)
+    return {
+        "msg": "oke"
+    }

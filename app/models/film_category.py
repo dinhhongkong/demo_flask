@@ -1,5 +1,7 @@
+from sqlalchemy import Column, Integer, Date, ForeignKey
+from sqlalchemy.orm import relationship
+
 from app.extension import db
-from sqlalchemy import Column, Integer, String, Text, Date, Double, ForeignKey
 
 
 class FilmCategory(db.Model):
@@ -8,3 +10,5 @@ class FilmCategory(db.Model):
     film_id = Column(Integer, ForeignKey('film.film_id'), primary_key=True)
     category_id = Column(Integer, ForeignKey('category.category_id'), primary_key=True)
     last_update = Column(Date)
+    film = relationship("Film", back_populates="film_categories")
+    category = relationship("Category", back_populates="film_categories")

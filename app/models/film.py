@@ -1,6 +1,7 @@
-from app.extension import db
 from sqlalchemy import Column, String, Text, Date, Double, Integer
 from sqlalchemy.orm import relationship
+
+from app.extension import db
 
 
 class Film(db.Model):
@@ -20,7 +21,4 @@ class Film(db.Model):
     special_features = Column(String)
     last_update = Column(Date)
 
-    film_category_list = relationship("FilmCategory", backref="film", lazy=True)
-
-    def __repr__(self):
-        return f'<Film {self.film_id}: {self.title}>'
+    film_categories = relationship("FilmCategory", back_populates="film", lazy=True)
